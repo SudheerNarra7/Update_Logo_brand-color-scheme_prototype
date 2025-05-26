@@ -1,0 +1,65 @@
+<%# app/views/settings/edit.html.erb %>
+<div class="settings-page-container">
+  <h1>Site Branding Settings</h1>
+  <p>
+    Changes made here will update the <code>config/branding_settings.yml</code> file and apply site-wide.
+  </p>
+
+  <%# Ensure form is multipart to handle file uploads %>
+  <%= form_with scope: :branding, url: update_branding_settings_path, method: :patch, multipart: true, local: true do |form| %>
+    <div class="form-group">
+      <%= form.label :logo_file, "Upload New Logo (Optional)" %>
+      <%= form.file_field :logo_file %>
+      <small>If you upload a new logo, it will replace the current custom logo. The site will use this uploaded logo. If no file is uploaded, the existing setting for logo path remains unless changed below.</small>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :logo_path_fallback, "Or, specify Logo Path (e.g., default_site_logo.png for asset, or /uploads/logos/custom_site_logo.png)" %>
+      <%= form.text_field :logo_path_fallback, value: @current_settings[:logo_path] %>
+      <small>Manually type a filename from <code>app/assets/images/</code> (like 'default_site_logo.png') or the path to a previously uploaded logo. Clear this and upload a new file to use the uploaded one.</small>
+    </div>
+    
+    Current logo being used:
+    <% if @current_settings[:logo_path].present? %>
+      <%= image_tag @current_settings[:logo_path], alt: "Current Logo Preview", style: "max-height: 50px; background: #eee; padding: 5px; margin-bottom: 10px; display: block;" %>
+      <small>Path: <%= @current_settings[:logo_path] %></small>
+    <% else %>
+      <p>No logo path set, will use hardcoded default.</p>
+    <% end %>
+
+
+    <div class="form-group">
+      <%= form.label :primary_color, "Header Background (Primary Color)" %>
+      <%= form.color_field :primary_color, value: @current_settings[:primary_color] %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :text_on_primary_color, "Header Text Color" %>
+      <%= form.color_field :text_on_primary_color, value: @current_settings[:text_on_primary_color] %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :secondary_color, "Accent / Secondary Color" %>
+      <%= form.color_field :secondary_color, value: @current_settings[:secondary_color] %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :text_color, "Main Body Text Color" %>
+      <%= form.color_field :text_color, value: @current_settings[:text_color] %>
+    </div>
+
+    <div class="form-group">
+      <%= form.label :background_color, "Page Background Color" %>
+      <%= form.color_field :background_color, value: @current_settings[:background_color] %>
+    </div>
+
+    <div class="form-actions">
+      <%= form.submit "Save Branding Settings" %>
+    </div>
+  <% end %>
+</div>
+
+<%# Styles for this page (can be moved to application.css) %>
+<style>
+  /* ... (keep existing settings page styles from previous response) ... */
+</style>

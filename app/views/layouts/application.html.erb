@@ -1,0 +1,52 @@
+<%# app/views/layouts/application.html.erb %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Prototype App</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <style>
+      :root {
+        --brand-primary-color: <%= BrandingService.primary_color %>;
+        --brand-text-on-primary-color: <%= BrandingService.text_on_primary_color %>;
+        --brand-secondary-color: <%= BrandingService.secondary_color %>;
+        --brand-text-color: <%= BrandingService.text_color %>;
+        --brand-background-color: <%= BrandingService.background_color %>;
+      }
+    </style>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-container">
+        <div class="logo-area">
+          <%= link_to root_path, class: "site-logo-link" do %>
+            <%# Uses the specific logo_path accessor which has a fallback %>
+            <%= image_tag BrandingService.logo_path, alt: "Site Logo", class: "site-logo-image" %>
+          <% end %>
+        </div>
+        <nav class="site-navigation">
+          <ul>
+            <li><%= link_to "Home", root_path %></li>
+            <li><%= link_to "About", "#" %></li>
+            <li><%= link_to "Services", "#" %></li>
+            <li><%= link_to "Contact", "#" %></li>
+            <li><%= link_to "Settings", edit_branding_settings_path %></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="container page-content">
+      <% if notice %> <p class="flash-notice"><%= notice %></p> <% end %>
+      <% if alert %> <p class="flash-alert"><%= alert %></p> <% end %>
+      <%= yield %>
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>&copy; <%= Time.now.year %> My Prototype App. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
